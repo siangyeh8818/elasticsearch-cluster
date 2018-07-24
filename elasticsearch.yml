@@ -1,0 +1,8 @@
+cluster.name: elasticsearch
+node.name: "Franz Kafka"
+node.master: true
+node.data: true
+network.host: 
+discovery.zen.minimum_master_nodes: 1
+discovery.zen.ping.timeout: 2
+discovery.zen.ping.unicast.hosts: ["172.16.106.130", "172.16.106.131", "172.16.106.132"]
