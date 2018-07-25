@@ -3,7 +3,6 @@ FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
 COPY  ./config/ /usr/share/elasticsearch/
 COPY  ./config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY ./analysis-ik-6.3.0/ /usr/share/elasticsearch/plugins/ik/
-RUN sed -i '2 i\chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data' /usr/local/bin/docker-entrypoint.sh
 
 RUN yum -y install bzip2
 COPY elasticsearch-head-master-docker.tar.gz /usr/share/elasticsearch/
@@ -17,4 +16,5 @@ EXPOSE 9100 9200 9300
 COPY  docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY  run-elasticsearch-head.sh /usr/local/bin/
 
+RUN sed -i '2 i\chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data' /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
