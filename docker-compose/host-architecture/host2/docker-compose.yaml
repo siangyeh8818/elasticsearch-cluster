@@ -1,7 +1,7 @@
 version: '2.1'
 services:
     elasticsearch:
-      image: docker-reg.emotibot.com.cn:55688/elasticsearch-oss:6.3.0-20180720-a9e1ae6
+      image: siangyeh8818/elasticarch-head:v6.3
       container_name: elasticsearch-2
       network_mode: host
       ports:
@@ -16,6 +16,7 @@ services:
         driver: json-file
       environment:
         ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+        HEAD_MINUTOR_IP: 172.16.106.131
       volumes:
         - /etc/localtime:/etc/localtime
 #        - ./elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml

@@ -1,8 +1,7 @@
 version: '2.1'
 services:
     elasticsearch:
-      image: elasticarch:test-v20
-#      image: docker-reg.emotibot.com.cn:55688/elasticsearch-oss:6.3.0-20180720-a9e1ae6
+      image: siangyeh8818/elasticarch-head:v6.3
       container_name: elasticsearch-1
       network_mode: host
       ports:
