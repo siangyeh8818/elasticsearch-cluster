@@ -1,7 +1,7 @@
 version: '2.1'
 services:
     elasticsearch:
-      image: siangyeh8818/elasticarch-head:v6.3
+      image: siangyeh8818/elasticsearch-head:v6.3
       container_name: elasticsearch-2
       network_mode: host
       ports:
