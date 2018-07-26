@@ -1,50 +1,20 @@
-FROM centos:7
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
 
-ENV ELASTIC_CONTAINER true
+COPY  ./config/ /usr/share/elasticsearch/
+COPY  ./config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+COPY ./analysis-ik-6.3.0/ /usr/share/elasticsearch/plugins/ik/
+RUN sed -i '2 i\chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data' /usr/local/bin/docker-entrypoint.sh
 
-RUN curl -s https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_linux-x64_bin.tar.gz | tar -C /opt -zxf -
-ENV JAVA_HOME /opt/jdk-10.0.2
+RUN yum -y install bzip2
+COPY elasticsearch-head-master-docker.tar.gz /usr/share/elasticsearch/
+RUN cd /usr/share/elasticsearch/
+RUN tar zxvf elasticsearch-head-master-docker.tar.gz
+RUN yum install -y epel-release 
+RUN yum install -y npm 
+RUN yum install -y nodejs
 
-# Replace OpenJDK's built-in CA certificate keystore with the one from the OS
-# vendor. The latter is superior in several ways.
-# REF: https://github.com/elastic/elasticsearch-docker/issues/171
-RUN ln -sf /etc/pki/ca-trust/extracted/java/cacerts /opt/jdk-10.0.2/lib/security/cacerts
+EXPOSE 9100 9200 9300
+COPY  docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY  run-elasticsearch-head.sh /usr/local/bin/
 
-RUN yum update -y && \
-    yum install -y nc unzip wget which net-tools && \
-    yum clean all
-
-RUN groupadd -g 1000 elasticsearch && \
-    adduser -u 1000 -g 1000 -G 0 -d /usr/share/elasticsearch elasticsearch && \
-    chmod 0775 /usr/share/elasticsearch && \
-    chgrp 0 /usr/share/elasticsearch
-
-WORKDIR /usr/share/elasticsearch
-COPY --from=prep_es_files --chown=1000:0 /usr/share/elasticsearch /usr/share/elasticsearch
-ENV PATH /usr/share/elasticsearch/bin:$PATH
-
-COPY --chown=1000:0 bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
-# Openshift overrides USER and uses ones with randomly uid>1024 and gid=0
-# Allow ENTRYPOINT (and ES) to run even with a different user
-RUN chgrp 0 /usr/local/bin/docker-entrypoint.sh && \
-    chmod g=u /etc/passwd && \
-    chmod 0775 /usr/local/bin/docker-entrypoint.sh
-
-EXPOSE 9200 9300
-
-LABEL org.label-schema.schema-version="1.0" \
-  org.label-schema.vendor="Elastic" \
-  org.label-schema.name="elasticsearch" \
-  org.label-schema.version="{{ elastic_version }}" \
-  org.label-schema.url="https://www.elastic.co/products/elasticsearch" \
-  org.label-schema.vcs-url="https://github.com/elastic/elasticsearch-docker" \
-#{% if image_flavor == 'oss' -%}
-  license="Apache-2.0"
-#{% else -%}
-#  license="Elastic License"
-#{% endif -%}
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-# Dummy overridable parameter parsed by entrypoint
-CMD ["eswrapper"]
+ENTRYPOINT ["docker-entrypoint.sh"]

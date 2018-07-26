@@ -1,14 +1,15 @@
 version: '2.1'
 services:
     elasticsearch:
-      image: docker-reg.emotibot.com.cn:55688/elasticsearch-oss:6.3.0-20180720-a9e1ae6
+      image: elasticarch:test-v20
+#      image: docker-reg.emotibot.com.cn:55688/elasticsearch-oss:6.3.0-20180720-a9e1ae6
       container_name: elasticsearch-1
       network_mode: host
       ports:
         - "9200:9200"
         - "9300:9300"
       restart: always
-      command: elasticsearch -E node.name="172.16.106.130" -E cluster.name="BFOPcluster" -E node.master="true" -E node.data="true" -E network.host="0.0.0.0" -E discovery.zen.minimum_master_nodes=2  -E discovery.zen.ping.unicast.hosts="172.16.106.130:9300,172.16.106.131:9300,172.16.106.132:9300" 
+      command: elasticsearch -E node.name="172.16.106.130" -E cluster.name="BFOPcluster" -E node.master="true" -E node.data="true" -E network.host="0.0.0.0" -E discovery.zen.minimum_master_nodes=1  -E discovery.zen.ping.unicast.hosts="172.16.106.130:9300,172.16.106.131:9300,172.16.106.132:9300" -E http.cors.enabled=true -E http.cors.allow-origin="*" 
       logging:
         options:
           max-size: "5M"
@@ -16,6 +17,7 @@ services:
         driver: json-file
       environment:
         ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+        HEAD_MINUTOR_IP: 172.16.106.130
       volumes:
         - /etc/localtime:/etc/localtime
 #        - ./elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
