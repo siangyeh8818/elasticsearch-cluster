@@ -8,3 +8,23 @@
                 sudo sysctl -w vm.max_map_count=262144  或是 vim /etc/sysctl.conf  加入vm.max_map_count=262144
 
 max_map_count文件包含限制一个process可以拥有的VMA的數量,process到了VMA上限但又只能釋放少量的memory给其他的kernel-process使用时，就引發錯誤<br>
+
+運行方式:
+------
+單台host的elasticsearch:
+  進到docker-compose/single-node 下:
+
+    docker-compose -f docker-compose up -d
+    
+三台host的elasticsearch cluster:
+  分別到這三台的機器上運行各自的docker-compose.yml
+  進到docker-compose/multi-node 下, 
+  host1:
+  
+    docker-compose -f docker-compose.yaml up -d
+  host2:
+    
+    docker-compose -f docker-compose.yaml up -d
+  host3:
+    
+    docker-compose -f docker-compose.yaml up -d
