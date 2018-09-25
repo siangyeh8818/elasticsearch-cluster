@@ -31,7 +31,7 @@ HEAD_MINUTOR_IP:運行的機器IP或是domain name , 這個變數是會影響看
 單台host的elasticsearch:
   進到docker-compose/single-node 下:
 
-    docker-compose -f docker-compose up -d
+    docker-compose -f docker-compose.yaml up -d
     
 三台host的elasticsearch cluster: <br>
   分別到這三台的機器上運行各自的docker-compose.yml <br>
