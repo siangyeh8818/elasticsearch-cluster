@@ -9,6 +9,18 @@
 
 max_map_count文件包含限制一个process可以拥有的VMA的數量,process到了VMA上限但又只能釋放少量的memory给其他的kernel-process使用时，就引發錯誤<br>
 
+運行參數設定:
+------
+
+    vi docker-compose.yaml
+command修改下列參數 :
+node.name=運行的機器IP
+discovery.zen.ping.unicast.hosts=整個集群的ip跟port, ex : 10.0.0.1:9300,10.0.0.2:9300
+
+environment修改下列參數 :
+ES_JAVA_OPTS , 看你的需求設定,沒要求就用預設即可
+HEAD_MINUTOR_IP:運行的機器IP或是domain name , 這個變數是會影響看elasticsearch-head的URL
+
 運行方式:
 ------
 單台host的elasticsearch:
