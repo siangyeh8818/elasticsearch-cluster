@@ -16,9 +16,9 @@ max_map_count文件包含限制一个process可以拥有的VMA的數量,process�
 
     docker-compose -f docker-compose up -d
     
-三台host的elasticsearch cluster:
-  分別到這三台的機器上運行各自的docker-compose.yml
-  進到docker-compose/multi-node 下, 
+三台host的elasticsearch cluster: <br>
+  分別到這三台的機器上運行各自的docker-compose.yml <br>
+  進到docker-compose/multi-node 下, <br>
   host1:
   
     docker-compose -f docker-compose.yaml up -d
