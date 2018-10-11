@@ -1,5 +1,10 @@
 # elasticsearch-cluster
 
+額外安裝插件 : 
+------
+  elasticsearch-head : UI管理的插件
+  
+
 Image位址 : https://hub.docker.com/r/siangyeh8818/elasticsearch-head/
 
 注意事項:
