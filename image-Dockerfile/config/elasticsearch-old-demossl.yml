@@ -23,16 +23,23 @@
 
 ######## Start Search Guard Demo Configuration ########
 #配置ssl
-#searchguard.ssl.transport.pemcert_filepath: node-0-signed.pem
-#searchguard.ssl.transport.pemkey_filepath: node-0.key.pem
-#searchguard.ssl.transport.pemtrustedcas_filepath: root-ca.pem
-#searchguard.ssl.transport.enforce_hostname_verification: false
-
+searchguard.ssl.transport.pemcert_filepath: esnode.pem
+searchguard.ssl.transport.pemkey_filepath: esnode-key.pem
+searchguard.ssl.transport.pemtrustedcas_filepath: root-ca.pem
+#searchguard.ssl.transport.keystore_filepath: node-0-keystore.jks
+#searchguard.ssl.transport.keystore_password: 12345678
+#searchguard.ssl.transport.truststore_filepath: truststore.jks
+#searchguard.ssl.transport.truststore_password: 12345678
+searchguard.ssl.transport.enforce_hostname_verification: false
 #配置HTTPS
-#searchguard.ssl.http.enabled: true
-#searchguard.ssl.http.pemcert_filepath: node-0-signed.pem
-#searchguard.ssl.http.pemkey_filepath: node-0.key.pem
-#searchguard.ssl.http.pemtrustedcas_filepath: root-ca.pem
+searchguard.ssl.http.enabled: true
+searchguard.ssl.http.pemcert_filepath: esnode.pem
+searchguard.ssl.http.pemkey_filepath: esnode-key.pem
+searchguard.ssl.http.pemtrustedcas_filepath: root-ca.pem
+#searchguard.ssl.http.keystore_filepath: node-0-keystore.jks
+#searchguard.ssl.http.keystore_password: 12345678
+#searchguard.ssl.http.truststore_filepath: truststore.jks
+#searchguard.ssl.http.truststore_password: 12345678
 
 searchguard.allow_unsafe_democertificates: true
 searchguard.allow_default_init_sgindex: true
