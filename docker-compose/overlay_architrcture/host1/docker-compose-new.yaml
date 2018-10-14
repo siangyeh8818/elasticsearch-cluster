@@ -1,0 +1,32 @@
+version: '3'
+services:
+    elasticsearch:
+      image: siangyeh8818/elasticsearch-head:v6.3-test
+#      image: siangyeh8818/elasticsearch-head:v6.3.1
+      container_name: elasticsearch-1
+      network_mode: host
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+        - "9100:9100"
+      restart: always
+      logging:
+        options:
+          max-size: "5M"
+          max-file: "10"
+        driver: json-file
+      environment:
+      - ES_JAVA_OPTS:-Xmx256m -Xms256m
+      - HEAD_MINUTOR_IP:172.16.106.130
+      - ES_CLUSTER_NAME:BFOPcluster
+      - ES_NETWORK_HOST:0.0.0.0
+      - ES_DISCOVERY_ZEN_MINIMUM_MASTER_NODES:1
+      - ES_NODE_NAME:172.16.106.130
+      - ES_NODE_MASTER:true
+      - ES_NODE_DATA:true
+      - ES_DISCOVERY_ZEN_PING_UNICAST_HOSTS:172.16.106.130:9300,172.16.106.131:9300,172.16.106.132:9300
+      - ES_HTTP_CORS_ENABLED:true
+      - ES_HTTP_CORS_ALLOW_ORIGIN:*
+      volumes:
+        - /etc/localtime:/etc/localtime
+#        - /home/deployer/infrastructure/volumes/elasticsearch:/usr/share/elasticsearch/data
