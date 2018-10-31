@@ -1,0 +1,8 @@
+version: '2'
+networks:
+  consul-overlay222:
+    driver: overlay
+    ipam:
+      config:
+      - subnet: 10.144.99.0/24
+        gateway: 10.144.99.1
