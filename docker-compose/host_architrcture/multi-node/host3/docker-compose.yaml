@@ -15,7 +15,8 @@ services:
                                   "-E", "node.data=true",
                                   "-E", "network.host=0.0.0.0",
                                   "-E", "discovery.zen.minimum_master_nodes=1",
-                                  "-E", "discovery.zen.ping.unicast.hosts=172.16.106.130:9300,172.16.106.131:9300,172.16.106.132:9300",
+                                  "-E", "discovery.zen.ping.unicast.hosts=172.16.106.130:9300",
+#                                  "-E", "discovery.zen.ping.unicast.hosts=172.16.106.130:9300,172.16.106.131:9300,172.16.106.132:9300",
                                   "-E", "http.cors.enabled=true",
                                   "-E", "http.cors.allow-origin=*"]
       logging:
