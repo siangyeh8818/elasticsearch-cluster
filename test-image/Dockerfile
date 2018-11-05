@@ -24,5 +24,5 @@ COPY  run-elasticsearch-head.sh /usr/local/bin/
 RUN wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64" \
     && chmod +x /usr/local/bin/gosu \
     && gosu nobody true
-
-ENTRYPOINT ["gosu elasticsearch docker-entrypoint.sh"]
+USER elasticsearch
+ENTRYPOINT ["docker-entrypoint.sh"]
