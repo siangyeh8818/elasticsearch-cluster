@@ -9,7 +9,7 @@ COPY elasticsearch-head-master-docker.tar.gz /usr/share/elasticsearch/
 RUN cd /usr/share/elasticsearch/
 RUN tar zxvf elasticsearch-head-master-docker.tar.gz
 RUN yum install -y epel-release 
-RUN yum install -y npm nodejs wget
+RUN yum install -y npm nodejs wget bind-utils
 
 EXPOSE 9100 9200 9300
 COPY  docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

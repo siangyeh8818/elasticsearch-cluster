@@ -23,23 +23,24 @@ spec:
                   values:
                   - elasticsearch-cluster
             topologyKey: kubernetes.io/hostname
-#      initContainers:
-#      - name: init-sysctl
-#        image: busybox:1.27.2
-#        command:
- #       - sysctl
- #       - -w
- #       - vm.max_map_count=262144
- #       securityContext:
- #         privileged: true
+      initContainers:
+      - name: init-sysctl
+        image: 172.16.101.70/emotibot-k8s/busybox
+        command:
+        - sysctl
+        - -w
+        - vm.max_map_count=262144
+        securityContext:
+          privileged: true
       containers:
       - name: elasticsearch-cluster
-        image: siangyeh8818/elasticsearch-head:v6.3.1
+        image: 172.16.101.70/bfop/elasticsearch-test:v1
+#        image: siangyeh8818/elasticsearch-head:v6.3.1
 #        tty: true
         securityContext:
           privileged: true
         command: ["elasticsearch"]
-        args: [
+        args: ["-E", 'node.name=${MY_POD_NAME}' ,
                "-E", "cluster.name=BFOPcluster",
                "-E", "node.master=true",
                "-E", "node.data=true",
@@ -77,13 +78,13 @@ spec:
           requests:
             cpu: 0.5
             memory: 512Mi
-        volumeMounts:
-        - mountPath: /etc/localtime
-          name: hosttime
-      volumes:
-       - name: hosttime
-         hostPath:
-           path: /etc/localtime 
+#        volumeMounts:
+#        - mountPath: /etc/localtime
+#          name: hosttime
+#      volumes:
+#       - name: hosttime
+#         hostPath:
+#           path: /etc/localtime 
 #      nodeSelector:
 #        ebot-role: ebot-controller 
 
