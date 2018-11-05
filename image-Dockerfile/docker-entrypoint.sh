@@ -1,6 +1,7 @@
 #!/bin/bash
 
-bash /usr/local/bin/run-elasticsearch-head.sh &
+exec gosu root /usr/local/bin/run-elasticsearch-head.sh &
+#bash /usr/local/bin/run-elasticsearch-head.sh &
 
 set -e
 
