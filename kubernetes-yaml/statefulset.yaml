@@ -1,0 +1,131 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: elasticsearch-cluster
+spec:
+  serviceName: "elasticsearch-cluster"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: elasticsearch-cluster
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      # soft antiaffinity for optimize placement
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - elasticsearch-cluster
+            topologyKey: kubernetes.io/hostname
+#      initContainers:
+#      - name: init-sysctl
+#        image: busybox:1.27.2
+#        command:
+ #       - sysctl
+ #       - -w
+ #       - vm.max_map_count=262144
+ #       securityContext:
+ #         privileged: true
+      containers:
+      - name: elasticsearch-cluster
+        image: siangyeh8818/elasticsearch-head:v6.3.1
+#        tty: true
+        securityContext:
+          privileged: true
+        command: ["elasticsearch"]
+        args: [
+               "-E", "cluster.name=BFOPcluster",
+               "-E", "node.master=true",
+               "-E", "node.data=true",
+               "-E", "network.host=0.0.0.0",
+               "-E", "discovery.zen.minimum_master_nodes=1",
+               "-E", "discovery.zen.ping.unicast.hosts=elasticsearch-cluster-0:9300"]
+        ports:
+          - containerPort: 9100
+            name: head-ui
+          - containerPort: 9200
+            name: http
+          - containerPort: 9300
+            name: transport
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        resources:
+          limits:
+            cpu: 1
+            memory: 2048Mi
+          requests:
+            cpu: 0.5
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: hosttime
+      volumes:
+       - name: hosttime
+         hostPath:
+           path: /etc/localtime 
+#      nodeSelector:
+#        ebot-role: ebot-controller 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-api
+  labels:
+    app: elasticsearch-cluster
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 9200
+#  clusterIP: None
+  selector:
+    app: elasticsearch-cluster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-discovery
+  labels:
+    app: elasticsearch-cluster
+spec:
+  ports:
+  - name: transport
+    port: 9300
+  clusterIP: None
+  selector:
+    app: elasticsearch-cluster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-head-ui
+  labels:
+    app: elasticsearch-cluster
+spec:
+  ports:
+  - name: head-ui
+    port: 9100
+  selector:
+    app: elasticsearch-cluster

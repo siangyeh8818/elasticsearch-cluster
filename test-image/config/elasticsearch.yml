@@ -1,0 +1,49 @@
+## Default Elasticsearch configuration from elasticsearch-docker.
+## from https://github.com/elastic/elasticsearch-docker/blob/master/build/elasticsearch/elasticsearch.yml
+
+# cluster.name: ${ES_CLUSTER_NAME}
+# network.host: ${ES_NETWORK_HOST}
+
+# minimum_master_nodes need to be explicitly set when bound on a public IP
+# set to 1 to allow single node clusters
+# Details: https://github.com/elastic/elasticsearch/pull/17288
+# discovery.zen.minimum_master_nodes: ${ES_DISCOVERY_ZEN_MINIMUM_MASTER_NODES}
+
+## Use single node discovery in order to disable production mode and avoid bootstrap checks
+## see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+#
+# discovery.type: single-node
+
+# node.name: ${ES_NODE_NAME}
+# node.master: ${ES_NODE_MASTER}
+# node.data: ${ES_NODE_DATA}
+# discovery.zen.ping.unicast.hosts: ${ES_DISCOVERY_ZEN_PING_UNICAST_HOSTS}
+# http.cors.enabled: ${ES_HTTP_CORS_ENABLED}
+# http.cors.allow-origin: ${ES_HTTP_CORS_ALLOW_ORIGIN}
+
+######## Start Search Guard Demo Configuration ########
+#配置ssl
+#searchguard.ssl.transport.pemcert_filepath: node-0-signed.pem
+#searchguard.ssl.transport.pemkey_filepath: node-0.key.pem
+#searchguard.ssl.transport.pemtrustedcas_filepath: root-ca.pem
+#searchguard.ssl.transport.enforce_hostname_verification: false
+
+#配置HTTPS
+#searchguard.ssl.http.enabled: true
+#searchguard.ssl.http.pemcert_filepath: node-0-signed.pem
+#searchguard.ssl.http.pemkey_filepath: node-0.key.pem
+#searchguard.ssl.http.pemtrustedcas_filepath: root-ca.pem
+
+searchguard.allow_unsafe_democertificates: true
+searchguard.allow_default_init_sgindex: true
+searchguard.authcz.admin_dn:
+#  - CN=admin,OU=client,O=client,L=Test,C=DE
+  - CN=kirk,OU=client,O=client,L=test, C=de
+
+searchguard.audit.type: internal_elasticsearch
+searchguard.enable_snapshot_restore_privilege: true
+searchguard.check_snapshot_restore_write_privileges: true
+searchguard.restapi.roles_enabled: ["sg_all_access"]
+cluster.routing.allocation.disk.threshold_enabled: false
+node.max_local_storage_nodes: 3
+######## End Search Guard Demo Configuration ########
