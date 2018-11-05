@@ -34,7 +34,7 @@ spec:
           privileged: true
       containers:
       - name: elasticsearch-cluster
-        image: 172.16.101.70/bfop/elasticsearch-test:v1
+        image: 172.16.101.70/bfop/elasticsearch-test:v2
 #        image: siangyeh8818/elasticsearch-head:v6.3.1
 #        tty: true
         securityContext:
@@ -46,7 +46,7 @@ spec:
                "-E", "node.data=true",
                "-E", "network.host=0.0.0.0",
                "-E", "discovery.zen.minimum_master_nodes=1",
-               "-E", "discovery.zen.ping.unicast.hosts=elasticsearch-cluster-0:9300"]
+               "-E", "discovery.zen.ping.unicast.hosts=elasticsearch-discovery:9300"]
         ports:
           - containerPort: 9100
             name: head-ui
@@ -78,13 +78,13 @@ spec:
           requests:
             cpu: 0.5
             memory: 512Mi
-#        volumeMounts:
-#        - mountPath: /etc/localtime
-#          name: hosttime
-#      volumes:
-#       - name: hosttime
-#         hostPath:
-#           path: /etc/localtime 
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: hosttime
+      volumes:
+       - name: hosttime
+         hostPath:
+           path: /etc/localtime 
 #      nodeSelector:
 #        ebot-role: ebot-controller 
 
