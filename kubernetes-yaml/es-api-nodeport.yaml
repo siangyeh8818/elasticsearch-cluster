@@ -9,9 +9,7 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    #port is loadbalancer port
     port: 9200
-    # targetport is container port
     targetPort: 9200
     nodePort: 30014
   selector:

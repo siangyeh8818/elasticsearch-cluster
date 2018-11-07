@@ -25,7 +25,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       initContainers:
       - name: init-sysctl
-        image: 172.16.101.70/emotibot-k8s/busybox
+        image: busybox
         command:
         - sysctl
         - -w
@@ -34,8 +34,7 @@ spec:
           privileged: true
       containers:
       - name: elasticsearch-cluster
-        image: 172.16.101.70/bfop/elasticsearch-test:v2
-#        image: siangyeh8818/elasticsearch-head:v6.3.1
+        image: siangyeh8818/elasticsearch-k8s:6.3.0
 #        tty: true
         securityContext:
           privileged: true
@@ -48,8 +47,6 @@ spec:
                "-E", "discovery.zen.minimum_master_nodes=1",
                "-E", "discovery.zen.ping.unicast.hosts=elasticsearch-discovery:9300"]
         ports:
-          - containerPort: 9100
-            name: head-ui
           - containerPort: 9200
             name: http
           - containerPort: 9300
@@ -94,7 +91,7 @@ kind: Service
 metadata:
   name: elasticsearch-api
   labels:
-    app: elasticsearch-cluster
+    app: elasticsearch-api
 spec:
   ports:
   - name: http
@@ -109,7 +106,7 @@ kind: Service
 metadata:
   name: elasticsearch-discovery
   labels:
-    app: elasticsearch-cluster
+    app: elasticsearch-discovery
 spec:
   ports:
   - name: transport
@@ -118,15 +115,3 @@ spec:
   selector:
     app: elasticsearch-cluster
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: elasticsearch-head-ui
-  labels:
-    app: elasticsearch-cluster
-spec:
-  ports:
-  - name: head-ui
-    port: 9100
-  selector:
-    app: elasticsearch-cluster
