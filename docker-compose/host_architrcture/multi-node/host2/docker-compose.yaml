@@ -23,6 +23,11 @@ services:
           max-size: "5M"
           max-file: "10"
         driver: json-file
+      ulimits:
+        nproc: 65535
+        nofile:
+          soft: 65536
+          hard: 65536
       environment:
         ES_JAVA_OPTS: "-Xmx256m -Xms256m"
         HEAD_MINUTOR_IP: 172.16.106.131

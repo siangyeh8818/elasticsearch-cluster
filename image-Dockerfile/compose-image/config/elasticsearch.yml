@@ -34,16 +34,16 @@
 #searchguard.ssl.http.pemkey_filepath: node-0.key.pem
 #searchguard.ssl.http.pemtrustedcas_filepath: root-ca.pem
 
-searchguard.allow_unsafe_democertificates: true
-searchguard.allow_default_init_sgindex: true
-searchguard.authcz.admin_dn:
+#searchguard.allow_unsafe_democertificates: true
+#searchguard.allow_default_init_sgindex: true
+#searchguard.authcz.admin_dn:
 #  - CN=admin,OU=client,O=client,L=Test,C=DE
-  - CN=kirk,OU=client,O=client,L=test, C=de
+#  - CN=kirk,OU=client,O=client,L=test, C=de
 
-searchguard.audit.type: internal_elasticsearch
-searchguard.enable_snapshot_restore_privilege: true
-searchguard.check_snapshot_restore_write_privileges: true
-searchguard.restapi.roles_enabled: ["sg_all_access"]
-cluster.routing.allocation.disk.threshold_enabled: false
-node.max_local_storage_nodes: 3
+#searchguard.audit.type: internal_elasticsearch
+#searchguard.enable_snapshot_restore_privilege: true
+#searchguard.check_snapshot_restore_write_privileges: true
+#searchguard.restapi.roles_enabled: ["sg_all_access"]
+#cluster.routing.allocation.disk.threshold_enabled: false
+#node.max_local_storage_nodes: 3
 ######## End Search Guard Demo Configuration ########
